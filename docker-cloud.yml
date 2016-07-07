@@ -1,8 +1,8 @@
 mongo:
   image: mongo
   volumes:
-    - ./data/runtime/db:/data/db
-    - ./data/dump:/dump
+    - /data/db/runtime
+    - /dump
   command: mongod --smallfiles --oplogSize 128
 hubot:
   image: rocketchat/hubot-rocketchat:v0.1.4
@@ -20,5 +20,14 @@ hubot:
     - EXTERNAL_SCRIPTS=hubot-seen,hubot-diagnostics,hubot-mongodb-brain,hubot-help,hubot-plusplus-userverify,hubot-google-images,hubot-quote,hubot-rules
     - HUBOT_LOG_LEVEL=debug
     - MONGODB_URL=mongodb://mongo/hubot-brain
+    - AUTHORIZED_KEYS=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCHO5L+ihNsx5EZ0B+e1blxNQZFtVzMHAFOtxiLPolLW6/f5BRAOYGgvEDz+8aSNMret1KeXFnl1Xm5JTfO2AgPhfebQJwJ+UGyxAafqlrFMDNK/3sqhBC4sy7UTTopLZK4G18+4/INI38ecy66+qocEoz31/zDHs3/SvGSER0v2pW6l7rBT4xXGIehBo3nlHG+aXkXiFUjLvvPAfw8wX5rbCqxnc/akwKEti9HYrf0JP1fDM8QJ7xOKGUmu5iyU8bRnweyGHS2nBY+am9LzjHPJittsC+tCeEorce7dNheg59AMZHDLTzQVKSPCALZJlbZ5nHjmLJOxWUY3W/CEoL
   links:
     - mongo:mongo
+authorizedkeys:
+  image: dockercloud/authorizedkeys
+  deployment_strategy: every_node
+  autodestroy: always
+  environment:
+    - AUTHORIZED_KEYS=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCHO5L+ihNsx5EZ0B+e1blxNQZFtVzMHAFOtxiLPolLW6/f5BRAOYGgvEDz+8aSNMret1KeXFnl1Xm5JTfO2AgPhfebQJwJ+UGyxAafqlrFMDNK/3sqhBC4sy7UTTopLZK4G18+4/INI38ecy66+qocEoz31/zDHs3/SvGSER0v2pW6l7rBT4xXGIehBo3nlHG+aXkXiFUjLvvPAfw8wX5rbCqxnc/akwKEti9HYrf0JP1fDM8QJ7xOKGUmu5iyU8bRnweyGHS2nBY+am9LzjHPJittsC+tCeEorce7dNheg59AMZHDLTzQVKSPCALZJlbZ5nHjmLJOxWUY3W/CEoL
+  volumes:
+    - /root:/user:rw
