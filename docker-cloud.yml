@@ -1,0 +1,24 @@
+mongo:
+  image: mongo
+  volumes:
+    - ./data/runtime/db:/data/db
+    - ./data/dump:/dump
+  command: mongod --smallfiles --oplogSize 128
+hubot:
+  image: rocketchat/hubot-rocketchat:v0.1.4
+  environment:
+    - ROCKETCHAT_URL=https://chat.consulting.redhat.com:443
+    - ROCKETCHAT_ROOM=hubot-tests,epona,mpeter,bofa_integration,boa-app-host-group
+    - LISTEN_ON_ALL_PUBLIC=false
+    - RESPOND_TO_DM=true
+    - ROCKETCHAT_USER=Mpeter.hubot
+    - ROCKETCHAT_PASSWORD=
+    - ROCKETCHAT_AUTH=password
+    - BOT_NAME=epona
+    - HUBOT_GOOGLE_CSE_ID=
+    - HUBOT_GOOGLE_CSE_KEY=
+    - EXTERNAL_SCRIPTS=hubot-seen,hubot-diagnostics,hubot-mongodb-brain,hubot-help,hubot-plusplus-userverify,hubot-google-images,hubot-quote,hubot-rules
+    - HUBOT_LOG_LEVEL=debug
+    - MONGODB_URL=mongodb://mongo/hubot-brain
+  links:
+    - mongo:mongo

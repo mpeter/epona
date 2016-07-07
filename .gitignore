@@ -1,0 +1,4 @@
+data
+docker-compose.yml
+docker.sh
+*.swp
